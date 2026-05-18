@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080">
+  <title>Ondol - Pitch Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-card: #12121a;
+      --accent: #ff6b35;
+      --accent-glow: rgba(255, 107, 53, 0.3);
+      --text-primary: #ffffff;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border: #1f1f2e;
+      --success: #10b981;
+      --giwa-blue: #3b82f6;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow: hidden;
+    }
+    
+    .deck-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+    }
+    
+    .slide-wrapper {
+      width: 1920px;
+      height: 1080px;
+      transform-origin: center center;
+    }
+    
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      display: none;
+      padding: 80px 120px;
+      background: var(--bg-dark);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Slide backgrounds */
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 80%;
+      height: 150%;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 60%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+      background: rgba(18, 18, 26, 0.9);
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    .nav button {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .nav button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .nav span {
+      color: var(--text-secondary);
+      font-size: 14px;
+      min-width: 60px;
+      text-align: center;
+    }
+    
+    /* Typography */
+    h1 {
+      font-size: 96px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    
+    h2 {
+      font-size: 64px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 48px;
+    }
+    
+    h3 {
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    
+    p {
+      font-size: 28px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+    
+    .subtitle {
+      font-size: 32px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    
+    .accent {
+      color: var(--accent);
+    }
+    
+    .giwa {
+      color: var(--giwa-blue);
+    }
+    
+    /* Logo */
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      position: absolute;
+      top: 40px;
+      left: 60px;
+    }
+    
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+    
+    .card-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .card-grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    
+    .card h4 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    .card p {
+      font-size: 20px;
+    }
+    
+    .card.highlight {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, var(--bg-card) 100%);
+    }
+    
+    /* Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 48px;
+      font-size: 24px;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+      padding: 24px 32px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .comparison-table th {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 20px;
+    }
+    
+    .comparison-table td:first-child {
+      color: var(--text-secondary);
+    }
+    
+    .comparison-table .better {
+      color: var(--success);
+      font-weight: 600;
+    }
+    
+    /* Timeline */
+    .timeline {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+    }
+    
+    .timeline-item {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+    }
+    
+    .timeline-item.current {
+      border-color: var(--accent);
+    }
+    
+    .timeline-phase {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .timeline-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .timeline-date {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    
+    .timeline-items {
+      list-style: none;
+      font-size: 18px;
+      color: var(--text-secondary);
+    }
+    
+    .timeline-items li {
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .timeline-items li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    
+    /* Tech stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 32px;
+    }
+    
+    .tech-label {
+      font-size: 18px;
+      color: var(--text-muted);
+      min-width: 140px;
+    }
+    
+    .tech-value {
+      font-size: 22px;
+      font-weight: 500;
+    }
+    
+    /* Bullet list */
+    .bullet-list {
+      list-style: none;
+      font-size: 28px;
+      line-height: 1.8;
+    }
+    
+    .bullet-list li {
+      padding-left: 40px;
+      position: relative;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    
+    .bullet-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 16px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    
+    /* Contact slide */
+    .contact-info {
+      margin-top: auto;
+      padding-top: 48px;
+    }
+    
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 28px;
+      margin-bottom: 24px;
+    }
+    
+    .contact-label {
+      color: var(--text-muted);
+      min-width: 100px;
+    }
+    
+    /* Center content */
+    .center-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    /* Title slide special */
+    .title-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .title-slide h1 {
+      font-size: 144px;
+      margin-bottom: 32px;
+    }
+    
+    .title-slide .subtitle {
+      font-size: 48px;
+    }
+    
+    .tagline {
+      font-size: 36px;
+      color: var(--text-secondary);
+      margin-top: 48px;
+      padding: 24px 48px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-container">
+    <div class="slide-wrapper">
+      
+      <!-- Slide 1: Title -->
+      <div class="slide title-slide active" data-slide="1">
+        <h1><span class="accent">Ondol</span></h1>
+        <p class="subtitle">Warm up your assets on GIWA</p>
+        <div class="tagline">All-in-one DeFi Hub with Dojang-verified perks</div>
+      </div>
+      
+      <!-- Slide 2: Problem -->
+      <div class="slide" data-slide="2">
+        <h2>GIWA needs <span class="accent">DeFi infrastructure</span></h2>
+        <div class="center-content">
+          <ul class="bullet-list">
+            <li>No native DEX/AMM on GIWA yet</li>
+            <li>No lending markets for yield or leverage</li>
+            <li>Users have to bridge out to use DeFi</li>
+            <li>Dojang identity layer is underutilized</li>
+            <li>10M+ Upbit users with no DeFi destination</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Slide 3: Solution -->
+      <div class="slide" data-slide="3">
+        <h2>Ondol — <span class="accent">Complete DeFi Suite</span></h2>
+        <div class="card-grid">
+          <div class="card">
+            <h4>🔄 Swap</h4>
+            <p>Instant token swaps via automated market maker</p>
+          </div>
+          <div class="card">
+            <h4>💧 Pools</h4>
+            <p>Provide liquidity to pairs, earn trading fees</p>
+          </div>
+          <div class="card">
+            <h4>📈 Lend</h4>
+            <p>Supply assets to earn passive yield</p>
+          </div>
+          <div class="card">
+            <h4>💰 Borrow</h4>
+            <p>Collateralized loans with competitive rates</p>
+          </div>
+        </div>
+        <p style="margin-top: 48px; text-align: center; font-size: 32px;">All in one platform. Native to <span class="giwa">GIWA</span>.</p>
+      </div>
+      
+      <!-- Slide 4: Dojang Integration -->
+      <div class="slide" data-slide="4">
+        <h2><span class="giwa">Dojang</span> Integration — <span class="accent">The Edge</span></h2>
+        <p>Verified users get better deals. Only possible on GIWA.</p>
+        <table class="comparison-table">
+          <tr>
+            <th>Benefit</th>
+            <th>Regular User</th>
+            <th>Dojang Verified</th>
+          </tr>
+          <tr>
+            <td>Swap Fee</td>
+            <td>0.30%</td>
+            <td class="better">0.20%</td>
+          </tr>
+          <tr>
+            <td>LP Rewards</td>
+            <td>1.0x</td>
+            <td class="better">1.2x boost</td>
+          </tr>
+          <tr>
+            <td>Collateral Ratio</td>
+            <td>150%</td>
+            <td class="better">120%</td>
+          </tr>
+          <tr>
+            <td>Borrow Rate</td>
+            <td>Base rate</td>
+            <td class="better">-0.5% discount</td>
+          </tr>
+        </table>
+      </div>
+      
+      <!-- Slide 5: Why GIWA -->
+      <div class="slide" data-slide="5">
+        <h2>Why <span class="giwa">GIWA</span>?</h2>
+        <div class="card-grid card-grid-3">
+          <div class="card">
+            <h4>⚡ 1-Second Blocks</h4>
+            <p>Fast DeFi UX, real-time trades</p>
+          </div>
+          <div class="card">
+            <h4>🔧 OP Stack</h4>
+            <p>EVM compatible, battle-tested tech</p>
+          </div>
+          <div class="card highlight">
+            <h4>🔐 Dojang</h4>
+            <p>Unique identity layer for trusted DeFi</p>
+          </div>
+          <div class="card">
+            <h4>🏦 Upbit Backing</h4>
+            <p>10M+ potential users waiting</p>
+          </div>
+          <div class="card">
+            <h4>🌱 Early Stage</h4>
+            <p>Opportunity to be THE DeFi hub</p>
+          </div>
+          <div class="card">
+            <h4>🌏 Korean Market</h4>
+            <p>Strong local ecosystem support</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 6: Roadmap -->
+      <div class="slide" data-slide="6">
+        <h2>Roadmap</h2>
+        <div class="timeline">
+          <div class="timeline-item current">
+            <div class="timeline-phase">PHASE 1</div>
+            <div class="timeline-title">MVP</div>
+            <div class="timeline-date">Jun — Jul 2026</div>
+            <ul class="timeline-items">
+              <li>Swap + Liquidity Pools</li>
+              <li>Basic Dojang integration</li>
+              <li>Testnet deployment</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">PHASE 2</div>
+            <div class="timeline-title">Expand</div>
+            <div class="timeline-date">Aug — Sep 2026</div>
+            <ul class="timeline-items">
+              <li>Lending/Borrowing module</li>
+              <li>Enhanced UI/UX</li>
+              <li>Mainnet ready</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">PHASE 3</div>
+            <div class="timeline-title">Growth</div>
+            <div class="timeline-date">Post-launch</div>
+            <ul class="timeline-items">
+              <li>Yield aggregator</li>
+              <li>More token pairs</li>
+              <li>GIWA Wallet integration</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 7: Tech Stack -->
+      <div class="slide" data-slide="7">
+        <h2>Tech Stack</h2>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <span class="tech-label">Contracts</span>
+            <span class="tech-value">Solidity — Uniswap V2 + Compound patterns</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-label">Frontend</span>
+            <span class="tech-value">Next.js + wagmi + viem</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-label">Identity</span>
+            <span class="tech-value">Dojang / EAS attestations</span>
+          </div>
+          <div class="tech-item">
+            <span class="tech-label">Chain</span>
+            <span class="tech-value">GIWA Sepolia → Mainnet</span>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 48px; max-width: 800px;">
+          <h4>Proven Patterns</h4>
+          <p>Built on battle-tested DeFi primitives. Not reinventing the wheel — optimizing for GIWA.</p>
+        </div>
+      </div>
+      
+      <!-- Slide 8: Team -->
+      <div class="slide" data-slide="8">
+        <h2>Team</h2>
+        <div class="card-grid card-grid-2" style="max-width: 1200px;">
+          <div class="card highlight">
+            <h4>Solo Builder</h4>
+            <p style="margin-bottom: 24px;">Full-stack Web3 developer shipping real products.</p>
+            <ul class="bullet-list" style="font-size: 22px;">
+              <li>Currently building TakPay (stablecoin payments on Arc Network)</li>
+              <li>Solidity smart contracts</li>
+              <li>Next.js + React frontends</li>
+              <li>DeFi mechanics & integrations</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Track Record</h4>
+            <p style="margin-bottom: 24px;">Fast iteration, ship-focused mindset.</p>
+            <ul class="bullet-list" style="font-size: 22px;">
+              <li>End-to-end product delivery</li>
+              <li>Testnet → Production experience</li>
+              <li>Proven ability to build alone</li>
+              <li>Hungry to build on GIWA</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 9: Ask -->
+      <div class="slide" data-slide="9">
+        <h2>What we need from <span class="accent">GASOK</span></h2>
+        <div class="center-content">
+          <ul class="bullet-list">
+            <li>Dev support for GIWA-specific integrations</li>
+            <li>Access to GIWA Wallet for in-app onboarding</li>
+            <li>Connections to early liquidity providers</li>
+            <li>Guidance on Dojang best practices</li>
+            <li>Feedback from the GIWA team</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Slide 10: Contact -->
+      <div class="slide" data-slide="10">
+        <h2>Let's <span class="accent">warm up</span> GIWA's DeFi</h2>
+        <div class="center-content">
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 64px; max-width: 800px;">
+            <h1 style="font-size: 80px; margin-bottom: 48px;"><span class="accent">Ondol</span></h1>
+            <div class="contact-row">
+              <span class="contact-label">Email</span>
+              <span>jokxon4@gmail.com</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-label">Track</span>
+              <span>DeFi / RWA</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-label">Status</span>
+              <span class="accent">Ready to build</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <nav class="nav">
+    <button onclick="prevSlide()">← Prev</button>
+    <span id="slideNum">1 / 10</span>
+    <button onclick="nextSlide()">Next →</button>
+  </nav>
+  
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = parseInt(localStorage.getItem('ondol-deck-slide') || '1');
+    
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+      currentSlide = n;
+      localStorage.setItem('ondol-deck-slide', n);
+      
+      slides.forEach(s => s.classList.remove('active'));
+      slides[n - 1].classList.add('active');
+      document.getElementById('slideNum').textContent = `${n} / ${totalSlides}`;
+      
+      // Scale to fit viewport
+      scaleSlides();
+    }
+    
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+    
+    function scaleSlides() {
+      const wrapper = document.querySelector('.slide-wrapper');
+      const scaleX = window.innerWidth / 1920;
+      const scaleY = window.innerHeight / 1080;
+      const scale = Math.min(scaleX, scaleY, 1);
+      wrapper.style.transform = `scale(${scale})`;
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+    
+    window.addEventListener('resize', scaleSlides);
+    showSlide(currentSlide);
+  </script>
+</body>
+</html>
